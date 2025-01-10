@@ -22,3 +22,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def excerpt(self,words:int=4):
+        return' '.join(self.content.split()[:words]) + '...'
+        

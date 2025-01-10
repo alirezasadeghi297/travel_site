@@ -32,8 +32,9 @@ def blog_single(request,id):
     return render(request,'blog/blog-single.html', context)
 
 
-def test(request,pid):
-    post=Post.objects.get(id=pid)
-    context={'post':post}
-    return render(request, 'blog/test.html',context)
+def test(request):
+    all_posts=Post.objects.all()
+    context={'all_posts':all_posts}
+
+    return render(request,'blog/test.html',context)
 # Create your views here.
