@@ -12,7 +12,7 @@ def blog_home(request):
 
 
 def blog_single(request,id):
-    current_post=get_object_or_404(Post,id=id,status=1)
+    current_post=get_object_or_404(Post,id=id,status=1,published_date__lt=current_time)
     
     # all_post=Post.objects.filter(published_date__lt = current_time,status=1)
     try:
