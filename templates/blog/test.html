@@ -19,9 +19,13 @@
         
     </p>
     <p> 
-        {% for p in all_posts%}
-        <li>{{p.content|snippets:30}}</li>
-        {% endfor %}
+        <!-- {% for p in all_posts%}
+        {{p.content|snippets:30}}
+        {% endfor %} -->
+    </p>
+
+    <p>
+        {% popularposts 4 %}
     </p>
 </body>
 </html>
