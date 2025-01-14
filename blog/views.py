@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from blog.models import Post
 from django.utils import timezone
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 current_time=timezone.now()
 
 
@@ -10,6 +11,15 @@ def blog_home(request,category_name=None,author_name=None):
         posts=posts.filter(category__name=category_name)
     if author_name:
         posts=posts.filter(author__username=author_name)
+    paginator=Paginator(posts,3)
+    page_number=request.GET.get('page')
+    try:
+        posts= paginator.get_page(page_number)
+    except PageNotAnInteger:
+        posts=paginator.get_page(1)
+    except EmptyPage:
+        posts=paginator.get_page(paginator.num_pages)
+    
     context={"post": posts}
     return render(request, 'blog/blog-home.html',context)
 
@@ -43,8 +53,8 @@ def category_filter(request, category_name):
 def blog_search(request):
     posts=Post.objects.filter(published_date__lt = current_time,status=1)
     if request.method == 'GET':
-        if s:=request.GET.get('s'):
-            posts=posts.filter(content__contains=s)
+        s=request.GET.get('s')
+        posts=posts.filter(content__contains=s)
     context={'post':posts}
     return render(request,'blog/blog-home.html',context)
 
