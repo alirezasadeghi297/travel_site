@@ -4,10 +4,13 @@ from django.utils import timezone
 current_time=timezone.now()
 
 
-def blog_home(request):
-    post_pub=Post.objects.filter(published_date__lt = current_time,status=1)
-    
-    context={"post": post_pub}
+def blog_home(request,category_name=None,author_name=None):
+    posts=Post.objects.filter(published_date__lt = current_time,status=1)
+    if category_name:
+        posts=posts.filter(category__name=category_name)
+    if author_name:
+        posts=posts.filter(author__username=author_name)
+    context={"post": posts}
     return render(request, 'blog/blog-home.html',context)
 
 
@@ -30,6 +33,20 @@ def blog_single(request,id):
     current_post.save()
     context={'post':current_post,'next_post':next_post,'perv_post':perv_post}
     return render(request,'blog/blog-single.html', context)
+
+def category_filter(request, category_name):
+    posts=Post.objects.filter(published_date__lt = current_time,status=1)
+    posts=posts.filter(category__name=category_name)
+    context={'post':posts}
+    return render(request,'blog/blog-home.html',context)
+
+def blog_search(request):
+    posts=Post.objects.filter(published_date__lt = current_time,status=1)
+    if request.method == 'GET':
+        if s:=request.GET.get('s'):
+            posts=posts.filter(content__contains=s)
+    context={'post':posts}
+    return render(request,'blog/blog-home.html',context)
 
 
 def test(request):
