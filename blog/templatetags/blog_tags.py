@@ -37,4 +37,10 @@ def categories():
         cat_names[name]=posts.filter(category=name).count()
 
     return {'categories': cat_names}
+
+
+@register.inclusion_tag('website/website-blog_post.html')
+def latest_blog_post():
+    posts=Post.objects.filter(status=1,published_date__lt=current_time).order_by('published_date')[:6]
     
+    return {'posts': posts}
