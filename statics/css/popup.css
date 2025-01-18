@@ -1,0 +1,18 @@
+/* Style for centering the pop-up */
+.alert {
+    position: fixed;
+    top: 50%;  /* Move to 50% of the screen height */
+    left: 50%; /* Move to 50% of the screen width */
+    transform: translate(-50%, -50%);  /* Offset by half its own width and height to truly center it */
+    z-index: 1050;  /* Ensure it's above other content */
+    max-width: 90%;  /* Set a maximum width to prevent it from being too wide */
+    width: auto;     /* Let it auto-size based on content */
+    padding: 20px;
+    text-align: center;
+}
+
+.alert .close {
+    position: absolute;
+    top: -15px;
+    left: 10px;
+}

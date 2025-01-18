@@ -29,6 +29,7 @@ def contact(request):
     if request.method == 'POST':
         form=ContactForm(request.POST)
         if form.is_valid():
+            form.instance.name='unknown'
             form.save()
             messages.add_message(request,messages.SUCCESS,'good job')
         else:

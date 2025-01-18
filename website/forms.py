@@ -9,7 +9,11 @@ class NameForm(forms.Form):
 class ContactForm(forms.ModelForm):
     class Meta:
         model=Contact
-        fields ='__all__'
+        fields = '__all__'
+    # def __init__(self, *args, **kwargs):
+    #     super(ContactForm, self).__init__(*args, **kwargs)
+    #     self.fields['subject'].required = False
+
 
 class NewsletterForm(forms.ModelForm):
     class Meta:
