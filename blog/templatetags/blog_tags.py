@@ -38,6 +38,16 @@ def categories():
 
     return {'categories': cat_names}
 
+@register.inclusion_tag('blog/blog_home_tags.html')
+def tags():
+    tag_name = Post.objects.filter(status=1,published_date__lt=current_time).values_list('tags__name')
+    tags=set()
+    for tag in tag_name:
+        
+        tags.add(tag[0])
+    tags.remove(None) 
+    return {'tags': tags}
+
 
 @register.inclusion_tag('website/website-blog_post.html')
 def latest_blog_post():

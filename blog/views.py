@@ -5,12 +5,14 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 current_time=timezone.now()
 
 
-def blog_home(request,category_name=None,author_name=None):
+def blog_home(request,category_name=None,author_name=None,tag_name=None):
     posts=Post.objects.filter(published_date__lt = current_time,status=1)
     if category_name:
         posts=posts.filter(category__name=category_name)
     if author_name:
         posts=posts.filter(author__username=author_name)
+    if tag_name:
+        posts=posts.filter(tags__name__in=[tag_name])
     paginator=Paginator(posts,3)
     page_number=request.GET.get('page')
     try:
