@@ -1,7 +1,10 @@
 from django.shortcuts import render,get_object_or_404
-from blog.models import Post
+from blog.models import Post,Comments
 from django.utils import timezone
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
+from blog.forms import CommnetsForm
+from django.contrib import messages
+
 current_time=timezone.now()
 
 
@@ -27,6 +30,15 @@ def blog_home(request,category_name=None,author_name=None,tag_name=None):
 
 
 def blog_single(request,id):
+    if request.method=='POST':
+        form=CommnetsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,'your comment submited')
+        else:
+            messages.add_message(request,messages.ERROR,'something went wrong')
+
+    # form=CommentsForm()
     current_post=get_object_or_404(Post,id=id,status=1,published_date__lt=current_time)
     
     # all_post=Post.objects.filter(published_date__lt = current_time,status=1)
@@ -43,7 +55,8 @@ def blog_single(request,id):
 
     current_post.counted_views+=1
     current_post.save()
-    context={'post':current_post,'next_post':next_post,'perv_post':perv_post}
+    comments=Comments.objects.filter(post=current_post,approved=True).order_by('-created_date')
+    context={'post':current_post,'next_post':next_post,'perv_post':perv_post,'comments':comments}
     return render(request,'blog/blog-single.html', context)
 
 def category_filter(request, category_name):
