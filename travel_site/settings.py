@@ -36,6 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'taggit',
@@ -44,7 +47,7 @@ INSTALLED_APPS = [
     'blog',
     'accounts'
 ]
-
+SITE_ID = 1
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -52,7 +55,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'travel_site.urls'
@@ -68,11 +73,18 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
                 
             ],
         },
     },
 ]
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+ACCOUNT_AUTHENTICATION_METHOD = "username_email" 
+ACCOUNT_EMAIL_REQUIRED = True
 
 WSGI_APPLICATION = 'travel_site.wsgi.application'
 
@@ -137,3 +149,17 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+#allauth
+ACCOUNT_AUTHENTICATION_METHOD = "username_email"  
+ACCOUNT_EMAIL_REQUIRED = True                    
+ACCOUNT_USERNAME_REQUIRED = True                 
+ACCOUNT_EMAIL_VERIFICATION = "optional"  
+
+ACCOUNT_SIGNUP_REDIRECT_URL = '/'    
+LOGIN_REDIRECT_URL = '/' 
+ACCOUNT_LOGOUT_REDIRECT_URL = '/' 
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' 
+DEFAULT_FROM_EMAIL = 'etestsadeghi@gmail.com'
